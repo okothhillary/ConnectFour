@@ -1,0 +1,7 @@
+C:\Users\Hillary\Desktop\CSE325-team14\ConnectFour\ConnectFour\obj\Debug\net9.0\rpswa.dswa.cache.json
+C:\Users\Hillary\Desktop\CSE325-team14\ConnectFour\ConnectFour\obj\Debug\net9.0\ConnectFour.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\Hillary\Desktop\CSE325-team14\ConnectFour\ConnectFour\obj\Debug\net9.0\ConnectFour.AssemblyInfoInputs.cache
+C:\Users\Hillary\Desktop\CSE325-team14\ConnectFour\ConnectFour\obj\Debug\net9.0\ConnectFour.AssemblyInfo.cs
+C:\Users\Hillary\Desktop\CSE325-team14\ConnectFour\ConnectFour\obj\Debug\net9.0\ConnectFour.csproj.CoreCompileInputs.cache
+C:\Users\Hillary\Desktop\CSE325-team14\ConnectFour\ConnectFour\obj\Debug\net9.0\ConnectFour.MvcApplicationPartsAssemblyInfo.cache
+C:\Users\Hillary\Desktop\CSE325-team14\ConnectFour\ConnectFour\obj\Debug\net9.0\ConnectFour.sourcelink.json

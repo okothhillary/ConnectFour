@@ -1,0 +1,138 @@
+﻿@using System.Drawing
+@inject GameState State
+
+<!-- Color selectors -->
+<div>
+    <label>Board Color: <input type="color" @bind="BoardColorHex" @bind:event="oninput" /></label>
+    <label>Player 1 Color: <input type="color" @bind="Player1ColorHex" @bind:event="oninput" /></label>
+    <label>Player 2 Color: <input type="color" @bind="Player2ColorHex" @bind:event="oninput" /></label>
+</div>
+
+<nav>
+    @for (byte i = 0; i < 7; i++)
+    {
+        var col = i;
+        <span title="Click to play a piece" @onclick="() => PlayPiece(col)">🔽</span>
+    }
+</nav>
+
+<article>
+    @winnerMessage  
+    <button style="@ResetStyle" @onclick="ResetGame">Reset the game</button>
+    <br />
+    <span class="alert-danger">@errorMessage</span>
+    <span class="alert-info">@CurrentTurn</span>
+</article>
+
+<div>
+    <HeadContent>
+        <style>
+            :root {
+                --board-bg: @ColorTranslator.ToHtml(BoardColor);
+                --player1: @ColorTranslator.ToHtml(Player1Color);
+                --player2: @ColorTranslator.ToHtml(Player2Color);
+            }
+        </style>
+    </HeadContent>
+
+    <div class="board">
+        @for (var i = 0; i < 42; i++)
+        {
+            <span class="container">
+                <span class="@pieces[i]"></span>
+            </span>
+        }
+    </div>
+</div>
+
+@code {
+    private string[] pieces = new string[42];
+    private string winnerMessage = string.Empty;
+    private string errorMessage = string.Empty;
+
+    private string CurrentTurn => (winnerMessage == string.Empty) ? $"Player {State.PlayerTurn}'s Turn" : "";
+    private string ResetStyle => (winnerMessage == string.Empty) ? "display: none;" : "";
+
+    private void PlayPiece(byte col)
+    {
+        errorMessage = string.Empty;
+
+        try
+        {
+            var player = State.PlayerTurn;
+            var landingRow = State.PlayPiece(col);
+            pieces[col + ((landingRow - 1) * 7)] = $"player{player}";
+        }
+        catch (ArgumentException ex)
+        {
+            errorMessage = ex.Message;
+        }
+
+        winnerMessage = State.CheckForWin() switch
+        {
+            GameState.WinState.Player1_Wins => "Player 1 Wins!",
+            GameState.WinState.Player2_Wins => "Player 2 Wins!",
+            GameState.WinState.Tie => "It's a tie!",
+            _ => ""
+        };
+    }
+
+    private void ResetGame()
+    {
+        State.ResetBoard();
+        pieces = new string[42];
+        winnerMessage = string.Empty;
+        errorMessage = string.Empty;
+    }
+
+    private string boardColorHex = "#FFFF00";
+    private string player1ColorHex = "#FF0000";
+    private string player2ColorHex = "#0000FF";
+
+    [Parameter]
+    public Color BoardColor { get; set; } = Color.Yellow;
+
+    [Parameter]
+    public Color Player1Color { get; set; } = Color.Red;
+
+    [Parameter]
+    public Color Player2Color { get; set; } = Color.Blue;
+
+    private string BoardColorHex
+    {
+        get => boardColorHex;
+        set
+        {
+            boardColorHex = value;
+            BoardColor = ColorTranslator.FromHtml(boardColorHex);
+            StateHasChanged();
+        }
+    }
+
+    private string Player1ColorHex
+    {
+        get => player1ColorHex;
+        set
+        {
+            player1ColorHex = value;
+            Player1Color = ColorTranslator.FromHtml(player1ColorHex);
+            StateHasChanged();
+        }
+    }
+
+    private string Player2ColorHex
+    {
+        get => player2ColorHex;
+        set
+        {
+            player2ColorHex = value;
+            Player2Color = ColorTranslator.FromHtml(player2ColorHex);
+            StateHasChanged();
+        }
+    }
+
+    protected override void OnInitialized()
+    {
+        State.ResetBoard();
+    }
+}
